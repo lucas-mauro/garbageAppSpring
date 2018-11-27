@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.groupSpring.garbageAppSpring.model.Material;
 import com.groupSpring.garbageAppSpring.model.User;
+import com.groupSpring.garbageAppSpring.model.UserRecycling;
+import com.groupSpring.garbageAppSpring.service.MaterialService;
+import com.groupSpring.garbageAppSpring.service.UserRecyclingService;
 import com.groupSpring.garbageAppSpring.service.UserService;
 
 
@@ -20,6 +24,10 @@ import com.groupSpring.garbageAppSpring.service.UserService;
 public class GarbageRecyclerController {
 	@Autowired
 	UserService us;
+	@Autowired
+	MaterialService ms;
+	@Autowired
+	UserRecyclingService urs;
 	
 	@PostMapping(path = "/api/users")
 	public ResponseEntity<User> registerUser(@RequestBody User u){
@@ -43,5 +51,53 @@ public class GarbageRecyclerController {
 		User p = us.findByName(name);
 		
 		return ResponseEntity.ok(p);
+	}
+	
+	@PostMapping(path = "/api/materials")
+	public ResponseEntity<Material> registerMaterial(@RequestBody Material m){
+		Material newM = ms.register(m);
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(newM.getId())
+				.toUri();
+		return ResponseEntity.created(location).body(newM);
+	}
+	
+	@GetMapping(path = "/api/materials")
+	public ResponseEntity<List<Material>> getMaterials( ){
+		List<Material> list = ms.getAllMaterials();
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping(path = "/api/materials/{name}/")
+	public ResponseEntity<Material> getMaterial(@PathVariable(value = "name") String name){
+		Material m = ms.findByName(name);
+		
+		return ResponseEntity.ok(m);
+	}
+	
+	@PostMapping(path = "/api/userrecyclings")
+	public ResponseEntity<UserRecycling> addUserRecyclings(@RequestBody UserRecycling ur){
+		UserRecycling newUR = urs.addUserRecycling(ur);
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(newUR.getId())
+				.toUri();
+		return ResponseEntity.created(location).body(newUR);
+	}
+	
+	@GetMapping(path = "/api/userrecyclings")
+	public ResponseEntity<List<UserRecycling>> getUserRecyclings( ){
+		List<UserRecycling> list = urs.getAllUserRecyclings();
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping(path = "/api/userrecyclings/{name}/")
+	public ResponseEntity<UserRecycling> getUserRecycling(@PathVariable(value = "name") String name){
+		UserRecycling m = urs.findByName(name);
+		
+		return ResponseEntity.ok(m);
 	}
 }
