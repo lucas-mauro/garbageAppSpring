@@ -1,5 +1,7 @@
 package com.groupSpring.garbageAppSpring.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,21 +13,28 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_recyclings")
-public class UserRecycling {
+public class UserRecycling implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "material_name", nullable = false)
-	private String material_name;
+	@Column(name = "materialname", nullable = false)
+	private String materialname;
+	
 	
 	@OneToOne
 	@JoinColumn(name = "name", referencedColumnName = "name", insertable = false, updatable = false)
     private User user;
 	
 	@OneToOne
-	@JoinColumn(name = "material_name", referencedColumnName = "name", insertable = false, updatable = false)
+	@JoinColumn(name = "materialname", referencedColumnName = "name", insertable = false, updatable = false)
     private Material material;
+	
 	
 	@Column(name = "date", nullable = true)
     private java.util.Date date;
@@ -45,12 +54,8 @@ public class UserRecycling {
 		this.name = name;
 	}
 
-	public String getMaterial_name() {
-		return material_name;
-	}
-
-	public void setMaterial_name(String material_name) {
-		this.material_name = material_name;
+	public String getMaterialname() {
+		return materialname;
 	}
 
 	public User getUser() {
@@ -67,6 +72,10 @@ public class UserRecycling {
 
 	public void setMaterial(Material material) {
 		this.material = material;
+	}
+
+	public void setMaterialname(String materialname) {
+		this.materialname = materialname;
 	}
 
 	public java.util.Date getDate() {

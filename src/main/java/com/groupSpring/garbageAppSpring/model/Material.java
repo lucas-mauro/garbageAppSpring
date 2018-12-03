@@ -1,5 +1,7 @@
 package com.groupSpring.garbageAppSpring.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,13 +11,18 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "materials")
-public class Material {
+public class Material implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "name", nullable = false, unique = true)
     private String name;
 	
 	@Column(name = "weight", nullable = true)
-    private String weight;
+    private float weight;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +36,11 @@ public class Material {
 		this.name = name;
 	}
 
-	public String getWeight() {
+	public float getWeight() {
 		return weight;
 	}
 
-	public void setWeight(String weight) {
+	public void setWeight(float weight) {
 		this.weight = weight;
 	}
 

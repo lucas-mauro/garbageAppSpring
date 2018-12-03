@@ -19,8 +19,13 @@ public class UserRecyclingServiceImp implements UserRecyclingService {
 	}
 
 	@Override
-	public UserRecycling findByName(String name) {
+	public List<UserRecycling> findByName(String name) {
 		return urr.findByName(name);
+	}
+	
+	@Override
+	public List<UserRecycling> findByMaterialname(String materialname) {
+		return urr.findByMaterialname(materialname);
 	}
 
 	@Override

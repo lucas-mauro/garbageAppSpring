@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.groupSpring.garbageAppSpring.model.Material;
+import com.groupSpring.garbageAppSpring.model.TotalMaterialRecycling;
 import com.groupSpring.garbageAppSpring.model.User;
 import com.groupSpring.garbageAppSpring.model.UserRecycling;
 import com.groupSpring.garbageAppSpring.service.MaterialService;
@@ -95,9 +96,22 @@ public class GarbageRecyclerController {
 	}
 	
 	@GetMapping(path = "/api/userrecyclings/{name}/")
-	public ResponseEntity<UserRecycling> getUserRecycling(@PathVariable(value = "name") String name){
-		UserRecycling m = urs.findByName(name);
+	public ResponseEntity<List<UserRecycling>> getUserRecycling(@PathVariable(value = "name") String name){
+		List<UserRecycling> list = urs.findByName(name);
 		
-		return ResponseEntity.ok(m);
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping(path = "/api/usertotalrecyclings/{materialname}/")
+	public ResponseEntity<TotalMaterialRecycling> getTotalUserRecycling(@PathVariable(value = "materialname") String materialname){
+		List<UserRecycling> list = urs.findByMaterialname(materialname);
+		TotalMaterialRecycling totalMaterialRecycling = new TotalMaterialRecycling();
+		float total = 0;
+		for(int i = 0; i < list.size(); i++) {
+			total = total + (list.get(i).getMaterial().getWeight() * list.get(i).getQuantity());
+		}
+		totalMaterialRecycling.setMaterialname(materialname);
+		totalMaterialRecycling.setTons(total);
+		return ResponseEntity.ok(totalMaterialRecycling);
 	}
 }

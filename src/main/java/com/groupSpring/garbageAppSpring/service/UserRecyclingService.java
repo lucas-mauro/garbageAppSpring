@@ -7,7 +7,9 @@ import com.groupSpring.garbageAppSpring.model.UserRecycling;
 public interface UserRecyclingService {
 	UserRecycling addUserRecycling(UserRecycling ur);
 
-	UserRecycling findByName(String name);
+	List<UserRecycling> findByName(String name);
+	
+	List<UserRecycling> findByMaterialname(String materialname);
 	
 	List<UserRecycling> getAllUserRecyclings();
 }
